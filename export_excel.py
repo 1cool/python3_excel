@@ -39,7 +39,7 @@ def write_excel(d, sheet):
     """
     title = sheet.row_values(0)[0]
     for k, ele in d.items():
-        stu = [sheet.row_values(0), sheet.row_values(1), sheet.row_values(2), sheet.row_values(3)]
+        stu = [sheet.row_values(3)]
 
         for e in ele:
             stu.append(sheet.row_values(e))
@@ -51,18 +51,26 @@ def write_excel(d, sheet):
         al.vert = 0x01  # 设置垂直居中
         style.alignment = al
         sheet_n = book.add_sheet('sheet1')  # 添加一个sheet页
+        tall_style = xlwt.easyxf('font:height 360;')  # 18pt,类型小初的字号
         row = 0  # 控制行
 
         for st in stu:
             col = 0  # 控制列
+            sheet_n.row(row).set_style(tall_style)
             for s in st:  # 再循环里面list的值，每一列
+                sheet_n.col(col).width = 256 * 20
                 sheet_n.write(row, col, s, style)
                 col += 1
             row += 1
         #     指定目录
-        path = r"./output/" + title + '_' + k + ".xlsx"
+        path = r"./output/" + title + '_' + k + ".xls"
         book.save(path)
 
 
 if __name__ == '__main__':
-    read_file()
+    try:
+        read_file()
+    except:
+        exit('运行失败!')
+    print('运行成功!')
+    os.system("pause")
